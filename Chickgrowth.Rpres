@@ -1,0 +1,59 @@
+Chickgrowth
+========================================================
+author: Rena Wang
+date: 24 Dec 2019
+autosize: true
+
+
+```{r library, include=FALSE}
+library(dplyr)
+library(ggplot2)
+```
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r ChickWeight, include=FALSE}
+names(ChickWeight)
+head(ChickWeight)
+day0 <- ChickWeight %>% filter(Time==0)
+DietAve <- ChickWeight %>% group_by(Time, Diet) %>% summarise(weightAve=mean(weight)) %>% ungroup()
+```
+
+
+Background
+========================================================
+
+We are using Checkweight data frame in R to investigate the effect of diet on early Growth of Chicks.
+The dataframe contains experimental data with  `r length(unique(ChickWeight$Chick))` chicks seperate into `r length(unique(ChickWeight$Diet))` diet groups, and their weights were recorded upon their growth.
+
+Chick growth Analysis
+========================================================
+
+Dataset: CheckWeight
+
+- Boxplot for the weight distribution of newborn chicks used for different diet group
+- Lineplot for the effect of diet on the growth of chicks.
+
+
+Boxplot for the weight distribution of newborn chicks
+========================================================
+
+```{r}
+ggplot(day0, aes(Diet, weight))+
+    geom_boxplot()+
+    geom_point(position=position_jitter(0.2))
+```
+
+Line Plot for Average Chick Growth at Different Diet
+========================================================
+
+```{r, echo=FALSE}
+ggplot(DietAve, aes(Time, weightAve, color=factor(Diet)))+
+    geom_point()+
+    geom_smooth()
+```
+
+Conslusion
+=======================================================
+We concluded that Chicks with Diet 4 grow the fastest.
